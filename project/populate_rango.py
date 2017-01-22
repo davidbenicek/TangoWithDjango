@@ -1,4 +1,6 @@
 import os
+from random import randint
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE',
 					'project.settings')
 
@@ -51,14 +53,14 @@ def populate():
 	for cat, cat_data in cats.items():
 		c = add_cat(cat, cat_data["views"], cat_data["likes"])
 		for p in cat_data["pages"]:
-			add_page(c, p["title"], p["url"])
+			add_page(c, p["title"], p["url"], randint(0,100))
 
 	# Print out the categories we have added.
 	for c in Category.objects.all():
 		for p in Page.objects.filter(category=c):
 			print("- {0} - {1}".format(str(c), str(p)))
  
-def add_page(cat, title, url, views=0):
+def add_page(cat, title, url, views):
 	p = Page.objects.get_or_create(category=cat, title=title)[0]
 	p.url=url
 	p.views=views
